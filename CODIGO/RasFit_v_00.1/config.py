@@ -23,8 +23,13 @@ class environment_variables:
         self.exercises_path = os.path.join(self.base_dir,"app/data/exercises/")
         self.users_path = os.path.join(self.base_dir,"app/data/user_data/")
         self.users_file = self.users_path + "users.csv"
-        self.var_entorno= { "user_name": "default"}
+        self.var_entorno= { "user_name": "default",
+                            "wod_type": "AMRAP",
+                            "training_time": 30}
         self.update_info()
+
+        #SIZES
+        self.window_size = [400, 400] # [ Width, Height ]
         
 
 
@@ -65,4 +70,9 @@ class environment_variables:
         else:
             color.p("[-] ERROR: No existe ningun usuario con ese nombre", "red")
   
+
+    def get_user_history(self):
+        user_history = file_manager.read_csv_dict(self.users_path + self.var_entorno["user_name"] + "_history.csv") #  exercise_name:  [ tipo, dificultad, age, musculo, material, ]
+        
+        return user_history
 
