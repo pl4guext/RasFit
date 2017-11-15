@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+import datetime
+from random import randint
 
 
         # self.var_entorno= { "user_name": "default",
@@ -14,29 +16,59 @@ class WOD_Generator:
     def __init__(self):
         self.WOD_types = ["EMOM", "AMRAP", "TIME", "REPS"]
         self.material = { "bands": True, "dumbels": True, "heavy_dumbels":False, "rings":True, "bar":True}
+        self.muscles = [ "pectoral", "cuadriceps", "isquios", "gluteo", "dorsal", "espalda_media", "lumbares", "trapecio", "triceps", "biceps", "hombro", "recto_abdominal", "transverso", "oblicuos"]
+
+        # Parametros de generacion de WODs
+        self.days_since = 3 # Dias que deben pasar para que un ejercicio vuelva a repetirse
+        self.WOD_time = 30 # Minutos que durará el WOD
+        self.WOD_total_exercises = 4 # Ejercicios diferentes dentro de un WOD
 
 
-    def get_random_WOD(self, conf):
+    def get_random_WOD(self, wod_selected, exercises, history):
 
+        self.set_proper_exercises(exercises, history)
+
+        # actual_WOD = self.generate_ARMRAP()
+  
+        # if conf.var_entorno[wod_type] == "AMRAP":
+
+        # elif conf.var_entorno[wod_type] == "EMOM":
+
+        # elif conf.var_entorno[wod_type] == "TIME":
+
+        # elif conf.var_entorno[wod_type] == "REPS":
+
+
+    def set_proper_exercises(self, all_exercises, user_history):
+
+        self.proper_exercises = {}
         
-
-        if conf.var_entorno[wod_type] == "AMRAP":
-
-        elif conf.var_entorno[wod_type] == "EMOM":
-
-        elif conf.var_entorno[wod_type] == "TIME":
-
-        elif conf.var_entorno[wod_type] == "REPS":
-
-        elif conf.var_entorno[wod_type] == "AMRAP":
-        print(history)
+        for key, value in all_exercises.items():#  exercise_name:  [ tipo, dificultad, musculo, material ]
+            if int(user_history[key][1]) > self.days_since : # exercise_name:  [ date, days_since, reps ]
+                if value[3]!="n/a":
+                    if self.material[value[3]]:
+                        self.proper_exercises[key] = value
+                else:
+                    self.proper_exercises[key] = value
+                
 
 
-    def get_proper_exercises(self):
+    def save_results(self, results, conf):
 
-        history = conf.get_user_history()
-        parsed_history = {}
+        conf.save_user_level(results)
 
-        for key, value in history.items():
-            if value[]
 
+
+    def generate_ARMRAP(self):
+        generated_WOD = [ ] #  [ [names], [tipos], [dificultades], [musculo] ]
+        list_exercises = list(self.proper_exercises.keys() )
+        num_exer = len(list_exercises)
+
+        # while len(list(generated_WOD.keys() ) ) < self.WOD_total_exercises :
+        #     tmp_rand = randint(0, num_exer)
+        #     if list_exercises[tmp_rand] not in generated_WOD:
+        #         if 
+        #         generated_WOD[ list_exercises[tmp_rand] ] = self.proper_exercises[list_exercises[tmp_rand]]
+
+        return generated_WOD
+            

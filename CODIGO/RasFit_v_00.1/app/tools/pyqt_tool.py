@@ -149,6 +149,7 @@ class Window_SelectUser(QMainWindow):
         global conf
         user_sel = self.combo_users.currentText()
         conf.var_entorno["user_name"] = user_sel
+        conf.update_info()
         color.p("[+] SUCCESS: User selected -> " + user_sel, "gre") 
 
 
@@ -186,7 +187,6 @@ class Window_WOD(QWidget):
         super().__init__()
         self.WOD_tool = wod_tool.WOD_Generator()
         
-        self.sel_WOD = self.WOD_types[0]
         self.WOD()
         self.timer = QTimer()
         self.time = QTime(0, 0, 0)
@@ -235,6 +235,8 @@ class Window_WOD(QWidget):
             self.title_color = QBrush(QColor(150,30,0)) 
             self.back_color = QBrush(QColor(200,110,110))
             self.repaint()
+            self.WOD_tool.save_results([1,2,3], conf)
+
 
         self.text_timer.setText(string_time)
 
@@ -274,7 +276,7 @@ class Window_WOD(QWidget):
         conf.var_entorno["wod_type"] = self.combo_WODs.currentText()
         self.check_material()
 
-        wod_tool.get_random_WOD(conf)
+        self.WOD_tool.get_random_WOD(conf.var_entorno["wod_type"], conf.all_exercises, conf.user_history)
         
         color.p("[*] INFO: WOD Generated ", "blu")
 
