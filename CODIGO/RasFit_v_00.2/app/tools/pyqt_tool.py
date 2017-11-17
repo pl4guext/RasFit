@@ -185,15 +185,17 @@ class Window_WOD(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.WOD_tool = wod_tool.WOD_Generator()
-        
-        self.WOD()
+
         self.timer = QTimer()
         self.time = QTime(0, 0, 0)
         self.timer.timeout.connect(self.timerEvent)
         self.title_color = QBrush(QColor(0,150,30)) 
         self.back_color = QBrush(QColor(110,200,110))
 
+        self.WOD_tool = wod_tool.WOD_Generator()
+        self.actual_WOD = []
+
+        self.WOD()
 
 
     def paintEvent(self, event):
@@ -229,7 +231,7 @@ class Window_WOD(QWidget):
 
     def update_timer(self, total_time, string_time):
 
-        if total_time >= 3 :
+        if total_time >= self.max_timer :
             self.timer.stop()
             self.time = QTime(0, 0, 0)
             self.title_color = QBrush(QColor(150,30,0)) 
@@ -272,17 +274,40 @@ class Window_WOD(QWidget):
         self.text_timer.move(150, 260)  
 
 
+        self.text_wod_title = QLabel("WOD Generado",self)
+        self.text_wod_title.setStyleSheet("font: 13pt Comic Sans MS")
+        self.text_wod_title.move(180, 60)  
+
+        self.text_wod_content = QLabel("     ",self)
+        self.text_wod_content.move(180, 100) 
+
+
+ 
+
+
+
+
+
     def generate_WOD(self):
         conf.var_entorno["wod_type"] = self.combo_WODs.currentText()
         self.check_material()
 
-        self.WOD_tool.get_random_WOD(conf.var_entorno["wod_type"], conf.all_exercises, conf.user_history)
+        self.actual_WOD = self.WOD_tool.get_random_WOD(conf.var_entorno["wod_type"], conf.all_exercises, conf.user_history)
+
+        wod_text = ""
+        for exer in self.actual_WOD[0]:
+            wod_text = wod_text + str(exer) 
+        
+        self.text_wod_content.setText(wod_text )
+
+        
         
         color.p("[*] INFO: WOD Generated ", "blu")
 
     def start_WOD(self):
 
         color.p("[*] INFO: Starting WOD ", "blu")
+        self.max_timer = 3
         self.timer.start(10)  #llama a la funcion timer cada X ms
 
 
@@ -433,8 +458,6 @@ class Window(QWidget):
         self.setGeometry(300, 300, 300, 200)
         self.setWindowTitle('Tooltips')    
         self.show()
-
-
 
 
 

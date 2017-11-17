@@ -39,6 +39,7 @@ class WOD_Generator:
         # elif conf.var_entorno[wod_type] == "REPS":
 
         print(actual_WOD)
+        return actual_WOD
 
 
     def set_proper_exercises(self, all_exercises, user_history):

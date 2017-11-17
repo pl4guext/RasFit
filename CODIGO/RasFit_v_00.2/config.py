@@ -26,7 +26,7 @@ class environment_variables:
         self.today = other_tool.today()
         self.var_entorno= { "user_name": "pablo",
                             "wod_type": "AMRAP",
-                            "training_time": 30}
+                            "training_time": 3}
         self.update_info()
 
         #SIZES
